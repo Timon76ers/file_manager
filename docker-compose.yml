@@ -1,0 +1,21 @@
+version: "3.8"
+services:
+    db:
+      image: mysql:8
+      volumes: 
+        - ./db/:/var/lib/mysql
+      environment: 
+        MYSQL_DATABASE: "usersdb"
+        MYSQL_ROOT_PASSWORD: "12345"
+    server:
+      build: ./server
+      volumes: 
+        - ./server/src/:/app/src/
+        - ./server/storage/:/app/storage/
+      depends_on: 
+        - db
+      links: 
+        - db
+      ports: 
+        - "3000:3000"
+      restart: unless-stopped  
